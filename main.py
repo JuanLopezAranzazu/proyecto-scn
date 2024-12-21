@@ -1,5 +1,6 @@
 import sympy as sp
 from utils.taylor_polynomial import taylor, absolute_error, relative_error, graph_taylor
+from utils.newton_raphson import newton_raphson, graph_newton_raphson
 
 # funcion principal
 def main():
@@ -37,7 +38,24 @@ def main():
       graph_taylor(f, t, x0, x_range)
 
     elif option == "2":
-      print("Método newton-raphson")
+         # datos de entrada
+      f = input("Ingrese la función f(x): ")
+      x0 = float(input("Ingrese el punto de aproximación x0: "))
+      tol = float(input("Ingrese la tolerancia: "))
+      x_range = int(input("Ingrese el rango de x: "))
+
+      # rango de x
+      x_range = (x0 - x_range, x0 + x_range)
+
+      # calcular las raíces de la función
+      result = newton_raphson(f, x0, tol)
+
+      # imprimir los resultados
+      for i, x in enumerate(result):
+        print(f'Raíz {i + 1}: {x}')
+
+      # graficar la función y las raíces
+      graph_newton_raphson(f, result, x_range)
 
     elif option == "3":
       print("Método diferencias finitas")

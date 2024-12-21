@@ -13,6 +13,7 @@ Método newton-Raphson
 f(x) = x**3-x+1
 punto de aproximacion x0 = 1
 tolerancia = 1e-4
+rango de x grafica = 10
 
 Método diferencias finitas
 

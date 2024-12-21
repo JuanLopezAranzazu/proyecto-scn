@@ -36,23 +36,23 @@ def solve_finite_differences(coefficients, points, n):
     for i in range(1, n + 1):
         xi = x1 + i * h
         
-        p = px(xi) / (2 * h)
+        p = px(xi)
         q = qx(xi)
-        r = rx(xi) * h**2
+        r = rx(xi)
 
         # Fill the matrix row by row
         if i > 1:
-            A[i - 1, i - 2] = -1 - p
-        A[i - 1, i - 1] = 2 + h**2 * q
+            A[i - 1, i - 2] = 1 + (h / 2) * p # sub-diagonal
+        A[i - 1, i - 1] = -2 - h**2 * q # diagonal
         if i < n:
-            A[i - 1, i] = -1 + p
+            A[i - 1, i] = 1 - (h / 2) * p # upper-diagonal
 
         # Fill the b vector
-        b[i - 1] = r
+        b[i-1]= r*h**2*x[i]
 
     # Apply boundary conditions
-    b[0] += (1 + px(x1 + h) / (2 * h)) * y1
-    b[-1] += (1 - px(x2 - h) / (2 * h)) * y2
+    b[0] = r * h**2 * x[1] - (1 + h/2*p) * y1
+    b[-1] = r * h**2 * x[-2] - (1 - h/2*p) * y2
 
     # Solve the system
     y_inner = np.linalg.solve(A, b)
@@ -67,9 +67,9 @@ def solve_finite_differences(coefficients, points, n):
 if __name__ == "__main__":
 
     # ask to user to enter the values of the coefficients
-    px = float(input("Enter the value of px: "))
-    qx = float(input("Enter the value of qx: "))
-    rx = float(input("Enter the value of rx: "))
+    px = 0.5
+    qx = -0.25
+    rx = -0.25
 
     # Coefficients of the differential equation
     coefficients = {
@@ -78,19 +78,21 @@ if __name__ == "__main__":
         'rx': lambda x: rx   # Example: r(x) = 1
     }
 
-    # ask to user to enter the values of the boundary points
 
-    x1 = float(input("Enter the value of x1: "))
-    y1 = float(input("Enter the value of y1: "))
-    x2 = float(input("Enter the value of x2: "))
-    y2 = float(input("Enter the value of y2: "))
+    # ask to user to enter the values of the first boundary point
+    x1 = 0
+    y1 = 1
+
+    # ask to user to enter the values of the second boundary point
+    x2 = 20
+    y2 = 10
 
     # Boundary points
     points = [(x1, y1), (x2, y2)]
 
 
     # Number of discretization points
-    n = int(input("Enter the number of discretization points: "))
+    n = 100
 
     # Solve the differential equation
     x, y = solve_finite_differences(coefficients, points, n)

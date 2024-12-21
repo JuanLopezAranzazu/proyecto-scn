@@ -2,6 +2,7 @@ import sympy as sp
 from utils.taylor_polynomial import taylor, absolute_error, relative_error, graph_taylor
 from utils.newton_raphson import newton_raphson, graph_newton_raphson
 from utils.linear_equations import jacobi_method
+from utils.nonlinear_equations import newton_raphson_n_variables, graph_nonlinear_equations
 
 # funcion principal
 def main():
@@ -62,7 +63,32 @@ def main():
       print("Método diferencias finitas")
 
     elif option == "4":
-      print("Método sistemas de ecuaciones no lineales (jacobiano)")
+      # datos de entrada
+      variables = int(input("Ingrese el número de variables: "))
+      f = []
+
+      for i in range(variables):
+        f.append(input(f"Ingrese la función f{(i+1)}: "))
+      
+      x0 = []
+
+      for i in range(variables):
+        x0.append(float(input(f"Ingrese el valor inicial {(i+1)}: ")))
+      
+      n = int(input("Ingrese el número de iteraciones: "))
+
+      # calcular las raíces del sistema de ecuaciones no lineales
+      result = newton_raphson_n_variables(f, x0, variables, n)
+
+      # imprimir los resultados
+      formatted_result = [[float(x) for x in y] for y in result]
+
+      for i, x in enumerate(formatted_result):
+        print(f'x{i} = {x}')
+
+      if variables == 2:
+        # graficar las funciones y los puntos
+        graph_nonlinear_equations(f[0], f[1], result)
 
     elif option == "5":
        # datos de entrada

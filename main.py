@@ -1,6 +1,7 @@
 import sympy as sp
 from utils.taylor_polynomial import taylor, absolute_error, relative_error, graph_taylor
 from utils.newton_raphson import newton_raphson, graph_newton_raphson
+from utils.linear_equations import jacobi_method
 
 # funcion principal
 def main():
@@ -64,7 +65,23 @@ def main():
       print("Método sistemas de ecuaciones no lineales (jacobiano)")
 
     elif option == "5":
-      print("Método sistema de ecuaciones lineales (jacobi)")
+       # datos de entrada
+      A = input("Ingrese la matriz A: ")
+      A = sp.Matrix(eval(A))
+      b = input("Ingrese el vector b: ")
+      b = sp.Matrix(eval(b))
+      # tolerancia
+      tol = float(input("Ingrese la tolerancia: "))
+      n = int(input("Ingrese el número de iteraciones: "))
+
+      # calcular las raíces del sistema de ecuaciones lineales
+      result = jacobi_method(A, b, tol, n)
+      
+      # imprimir los resultados
+      formatted_result = [[float(x) for x in y] for y in result]
+
+      for i, x in enumerate(formatted_result):
+        print(f'Iteración {i}: {x}')
 
     elif option == "6":
       break

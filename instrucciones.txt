@@ -27,4 +27,3 @@ Trigonométricas inversas
 arcsin(x)
 arccos(x)
 arctan(x)
-

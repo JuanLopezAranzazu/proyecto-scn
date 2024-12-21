@@ -3,6 +3,7 @@ from utils.taylor_polynomial import taylor, absolute_error, relative_error, grap
 from utils.newton_raphson import newton_raphson, graph_newton_raphson
 from utils.linear_equations import jacobi_method
 from utils.nonlinear_equations import newton_raphson_n_variables, graph_nonlinear_equations
+from utils.finite_differences import solve_finite_differences, graph_finite_differences
 
 # funcion principal
 def main():
@@ -60,7 +61,34 @@ def main():
       graph_newton_raphson(f, result, x_range)
 
     elif option == "3":
-      print("Método diferencias finitas")
+       # datos de entrada
+      x = sp.symbols('x')
+      px_input = input("Ingrese p(x): ")
+      qx_input = input("Ingrese q(x): ")
+      rx_input = input("Ingrese r(x): ")
+
+      px = sp.lambdify(x, sp.sympify(px_input), 'numpy')
+      qx = sp.lambdify(x, sp.sympify(qx_input), 'numpy')
+      rx = sp.lambdify(x, sp.sympify(rx_input), 'numpy')
+
+      a = float(input("Ingrese el límite inferior del intervalo: "))
+      b = float(input("Ingrese el límite superior del intervalo: "))
+      y_a = float(input("Ingrese la condición inicial y(a): "))
+      y_b = float(input("Ingrese la condición inicial y(b): "))
+      n = int(input("Ingrese el número de puntos: "))
+
+      coefficients = {'px': px, 'qx': qx, 'rx': rx}
+      points = [(a, y_a), (b, y_b)]
+
+      # resolver la ecuación diferencial
+      x_vals, y_vals = solve_finite_differences(coefficients, points, n)
+
+      # imprimir los resultados
+      for x, y in zip(x_vals, y_vals):
+        print(f'y({x}) = {y}')
+
+      # graficar la solución
+      graph_finite_differences((x_vals, y_vals))
 
     elif option == "4":
       # datos de entrada
@@ -96,7 +124,6 @@ def main():
       A = sp.Matrix(eval(A))
       b = input("Ingrese el vector b: ")
       b = sp.Matrix(eval(b))
-      # tolerancia
       tol = float(input("Ingrese la tolerancia: "))
       n = int(input("Ingrese el número de iteraciones: "))
 

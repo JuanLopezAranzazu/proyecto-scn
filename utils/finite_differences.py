@@ -1,6 +1,22 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def graph_finite_differences(result):
+  """
+  Grafica la solución de una ecuación diferencial utilizando el método de diferencias finitas.
+
+  Parámetros:
+    result (tuple): Tupla que contiene los arreglos x y y.
+  """
+  x, y = result
+
+  plt.plot(x, y, 'o-')
+  plt.xlabel('x')
+  plt.ylabel('y')
+  plt.title('Solución de la ecuación diferencial')
+  plt.grid(True)
+  plt.show()
+
 def solve_finite_differences(coefficients, points, n):
     """
     Solves a differential equation using the finite differences method.
@@ -62,50 +78,3 @@ def solve_finite_differences(coefficients, points, n):
 
 
     return x, y
-
-# Example Usage
-if __name__ == "__main__":
-
-    # ask to user to enter the values of the coefficients
-    px = 0.5
-    qx = -0.25
-    rx = -0.25
-
-    # Coefficients of the differential equation
-    coefficients = {
-        'px': lambda x: px,  # Example: p(x) = 0
-        'qx': lambda x: qx,  # Example: q(x) = -2
-        'rx': lambda x: rx   # Example: r(x) = 1
-    }
-
-
-    # ask to user to enter the values of the first boundary point
-    x1 = 0
-    y1 = 1
-
-    # ask to user to enter the values of the second boundary point
-    x2 = 20
-    y2 = 10
-
-    # Boundary points
-    points = [(x1, y1), (x2, y2)]
-
-
-    # Number of discretization points
-    n = 100
-
-    # Solve the differential equation
-    x, y = solve_finite_differences(coefficients, points, n)
-
-    # Print results
-    for xi, yi in zip(x, y):
-        print(f"x = {xi:.4f}, y = {yi:.4f}")
-
-    # Plot the results
-    plt.plot(x, y, marker='o', linestyle='-', color='b', label='Solution')
-    plt.title('Finite Differences Solution')
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.grid(True)
-    plt.legend()
-    plt.show()
